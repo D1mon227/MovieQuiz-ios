@@ -6,6 +6,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
     
     
     private var currentQuestionIndex: Int = 0
@@ -69,13 +71,20 @@ final class MovieQuizViewController: UIViewController {
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
+        switchButton()
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
+        switchButton()
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+    private func switchButton() {
+        yesButton.isEnabled = !yesButton.isEnabled
+        noButton.isEnabled = !noButton.isEnabled
     }
     
     private func show(quiz step: QuizStepViewModel) {
@@ -125,12 +134,14 @@ final class MovieQuizViewController: UIViewController {
             let text = "Ваш результат: \(correctAnswers)/10"
             let viewModel = QuizResultsViewModel(title: "Раунд окончен!", text: text, buttonText: "Сыграть ещё раз")
             show(quiz: viewModel)
+            switchButton()
         } else {
             imageView.layer.borderWidth = 0
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
             show(quiz: viewModel)
+            switchButton()
         }
     }
 }
