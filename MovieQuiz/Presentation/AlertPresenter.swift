@@ -5,12 +5,11 @@
 //  Created by Dmitry Medvedev on 03.01.2023.
 //
 
-import Foundation
 import UIKit
 
-class AlertPresenter: AlertPresenterProtocol {
+final class AlertPresenter: AlertPresenterProtocol {
     
-    weak var delegate: AlertPresenterDelegate?
+    private weak var delegate: AlertPresenterDelegate?
     
     init(delegate: AlertPresenterDelegate) {
         self.delegate = delegate

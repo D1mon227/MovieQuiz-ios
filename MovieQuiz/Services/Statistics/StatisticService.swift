@@ -9,6 +9,7 @@ import Foundation
 
 final class StatisticServiceImplementation: StatisticService {
     var userDefaults = UserDefaults.standard
+    
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
@@ -54,11 +55,13 @@ final class StatisticServiceImplementation: StatisticService {
         if bestGame < newGame {
             bestGame = newGame
         }
+        
         if gamesCount != 0 {
-            totalAccuracy = (totalAccuracy + (Double(newGame.correct) / Double(newGame.total))) / 2.0
+            totalAccuracy = (totalAccuracy * Double(gamesCount) + (Double(newGame.correct) / Double(newGame.total))) / Double(gamesCount + 1)
         } else {
             totalAccuracy = Double(newGame.correct) / Double(newGame.total)
         }
+        
         gamesCount += 1
     }
 }
