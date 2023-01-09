@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
@@ -133,7 +133,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="P3E-wk-GdV" id="0IN-lA-ek0"/>
                         <outlet property="imageView" destination="pPW-sG-XHK" id="adi-SL-ZRP"/>
+                        <outlet property="noButton" destination="EkH-Jw-LdI" id="Fpj-X8-G4i"/>
                         <outlet property="textLabel" destination="H4f-6v-a6m" id="7l7-oj-bGr"/>
+                        <outlet property="yesButton" destination="9nn-Ms-QTF" id="VNL-7h-CkN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
