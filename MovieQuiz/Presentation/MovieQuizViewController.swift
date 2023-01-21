@@ -38,6 +38,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         DispatchQueue.main.async { [weak self] in
             self?.activityIndicator.stopAnimating()
             self?.show(quiz: viewModel)
+            self?.imageView.layer.borderWidth = 0
         }
     }
     
@@ -46,7 +47,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     func didFailToLoadData(with error: Errors) {
-        showNetworkError(message: error.rawValue)
+        let myError: Error = Errors.errorDataLoad
+        showNetworkError(message: myError.localizedDescription)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -73,7 +75,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         activityIndicator.startAnimating()
     }
     
-    func showNetworkError(message: String) {
+    private func showNetworkError(message: String) {
         
         let alert = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать еще раз") { [weak self] in
             guard let self = self else { return }
@@ -81,7 +83,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             self.questionFactory?.loadData()
         }
         alertPresenter?.showAlert(model: alert)
-        //switchButton()
     }
     
     private func switchButton() {
@@ -141,7 +142,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 self.activityIndicator.startAnimating()
             }
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: task!)
-            imageView.layer.borderWidth = 0
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
             switchButton()

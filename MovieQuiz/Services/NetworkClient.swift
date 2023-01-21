@@ -12,17 +12,18 @@ struct NetworkClient {
     
     func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
         let request = URLRequest(url: url)
+        let myError: Error = Errors.codeError
         
         let task = URLSession.shared.dataTask(with: request) { data, responce, error in
-            if let _ = error {
+            if error != nil {
                 // Проверяем, пришла ли ошибка
-                handler(.failure(Errors.codeError))
+                handler(.failure(myError))
                 return
             }
             // Проверяем, что нам пришёл успешный код ответа
             if let responce = responce as? HTTPURLResponse,
                responce.statusCode < 200 || responce.statusCode >= 300 {
-                handler(.failure(Errors.codeError))
+                handler(.failure(myError))
                 return
             }
             // Возвращаем данные
