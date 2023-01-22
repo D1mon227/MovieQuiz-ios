@@ -1,5 +1,6 @@
 import UIKit
 
+
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate {
     // MARK: - Lifecycle
     
@@ -8,6 +9,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     
     
     private var currentQuestionIndex: Int = 0
@@ -17,22 +19,36 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticService?
+    private var task: DispatchWorkItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
-        alertPresenter = AlertPresenter(delegate: self)
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
+        questionFactory?.loadData()
+        showLoadingIndicator()
+        alertPresenter = AlertPresenter(delegate: self)
     }
     // MARK: - QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else { return }
         currentQuestion = question
+        task?.cancel()
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.stopAnimating()
             self?.show(quiz: viewModel)
+            self?.imageView.layer.borderWidth = 0
         }
+    }
+    
+    func didLoadDataFromServer() {
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Errors) {
+        let myError: Error = Errors.errorDataLoad
+        showNetworkError(message: myError.localizedDescription)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -53,6 +69,22 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
+    private func showLoadingIndicator() {
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .ypBlack
+        activityIndicator.startAnimating()
+    }
+    
+    private func showNetworkError(message: String) {
+        
+        let alert = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать еще раз") { [weak self] in
+            guard let self = self else { return }
+            self.activityIndicator.startAnimating()
+            self.questionFactory?.loadData()
+        }
+        alertPresenter?.showAlert(model: alert)
+    }
+    
     private func switchButton() {
         yesButton.isEnabled.toggle()
         noButton.isEnabled.toggle()
@@ -65,9 +97,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
+        return QuizStepViewModel(image: UIImage(data: model.image) ?? UIImage(),
                                  question: model.text,
                                  questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+        
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -101,13 +134,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 self.correctAnswers = 0
                 self.questionFactory?.requestNextQuestion()
                 self.imageView.layer.borderWidth = 0
+                self.switchButton()
             })
             alertPresenter?.showAlert(model: alert)
-            switchButton()
         } else {
-            imageView.layer.borderWidth = 0
+            task = DispatchWorkItem {
+                self.activityIndicator.startAnimating()
+            }
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: task!)
             currentQuestionIndex += 1
-            self.questionFactory?.requestNextQuestion()
+            questionFactory?.requestNextQuestion()
             switchButton()
         }
     }

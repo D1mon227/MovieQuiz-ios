@@ -121,16 +121,22 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Hpe-MK-BSr">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black (iOS)"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ETy-14-3LS" secondAttribute="trailing" constant="20" id="KW3-dL-eKo"/>
                             <constraint firstItem="ETy-14-3LS" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="NDy-5U-6Jf"/>
+                            <constraint firstItem="Hpe-MK-BSr" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="XUd-ph-oxy"/>
+                            <constraint firstItem="Hpe-MK-BSr" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="lJ9-RN-u9q"/>
                             <constraint firstItem="ETy-14-3LS" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="uAS-9C-hyP"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="Hpe-MK-BSr" id="w9Y-DL-0cO"/>
                         <outlet property="counterLabel" destination="P3E-wk-GdV" id="0IN-lA-ek0"/>
                         <outlet property="imageView" destination="pPW-sG-XHK" id="adi-SL-ZRP"/>
                         <outlet property="noButton" destination="EkH-Jw-LdI" id="Fpj-X8-G4i"/>
