@@ -27,7 +27,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
                     self.movies = mostPopularMovies.items
                     self.delegate?.didLoadDataFromServer()
                 case .failure(_):
-                    self.delegate?.didFailToLoadData(with: Errors.errorDataLoad)
+                    self.delegate?.didFailToLoadData(with: .errorDataLoad)
                 }
             }
         }
@@ -47,7 +47,7 @@ final class QuestionFactory: QuestionFactoryProtocol {
                 print("Failed to load image")
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
-                    self.delegate?.didFailToLoadData(with: Errors.errorLoadImage)
+                    self.delegate?.showNetworkError(message: Errors.errorLoadImage.errorText)
                 }
             }
             

@@ -47,8 +47,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     func didFailToLoadData(with error: Errors) {
-        let myError: Error = Errors.errorDataLoad
-        showNetworkError(message: myError.localizedDescription)
+        showNetworkError(message: Errors.errorDataLoad.errorText)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
@@ -75,7 +74,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         activityIndicator.startAnimating()
     }
     
-    private func showNetworkError(message: String) {
+    func showNetworkError(message: String) {
         
         let alert = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать еще раз") { [weak self] in
             guard let self = self else { return }

@@ -8,20 +8,16 @@
 import Foundation
 
 enum Errors: Error {
-    case errorLoadImage// = "Failed to load image. Try again."
-    case codeError// = "Failed to process request."
-    case errorDataLoad// = "Failed to load data. Try again."
-}
-
-extension Errors: LocalizedError {
-    public var errorDescription: String? {
+    case errorLoadImage, codeError, errorDataLoad
+    
+    var errorText: String {
         switch self {
         case .errorLoadImage:
-            return NSLocalizedString("Failed to load image. Try again.", comment: "")
+            return "Failed to load image. Try again."
         case .codeError:
-            return NSLocalizedString("Failed to process request. Try again.", comment: "")
+            return "Failed to process request. Try again."
         case .errorDataLoad:
-            return NSLocalizedString("Failed to load data. Try again.", comment: "")
+            return "No Internet connection. Try again."
         }
     }
 }
