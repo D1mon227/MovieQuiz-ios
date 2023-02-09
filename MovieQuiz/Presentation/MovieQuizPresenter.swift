@@ -86,7 +86,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             viewController?.showEndGameResults()
         } else {
             cancelIndicatorTask = DispatchWorkItem {
-                self.viewController?.activityIndicator.startAnimating()
+                self.viewController?.showLoadingIndicator()
             }
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: cancelIndicatorTask!)
             switchToNextQuestion()

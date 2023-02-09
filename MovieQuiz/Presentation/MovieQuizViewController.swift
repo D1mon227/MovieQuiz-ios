@@ -2,7 +2,6 @@ import UIKit
 
 protocol MovieQuizViewControllerProtocol: AlertPresenterDelegate {
     
-    var activityIndicator: UIActivityIndicatorView! { get set }
     func show(quiz step: QuizStepViewModel)
     func highlightImageBorder(isCorrectAnswer: Bool)
     func showLoadingIndicator()
@@ -20,12 +19,13 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
-    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     
     
     private var presenter: MovieQuizPresenter!
     private var alertPresenter: AlertPresenterProtocol?
-    private var statisticService: StatisticService?
+    
+    override var preferredStatusBarStyle : UIStatusBarStyle { .lightContent }
     
     override func viewDidLoad() {
         super.viewDidLoad()
