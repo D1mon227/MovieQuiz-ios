@@ -13,8 +13,12 @@ protocol MoviesLoading {
 
 struct MoviesLoader: MoviesLoading {
     // MARK: - NetworkClient
-    private let networkClient = NetworkClient()
-    let myError: Error = Errors.errorDataLoad
+    private let networkClient: NetworkRouting
+    let myError: Error = Errors.codeError
+    
+    init(networkClient: NetworkRouting = NetworkClient()) {
+        self.networkClient = networkClient
+    }
     
     // MARK: - URL
     private var mostPopularMoviesUrl: URL {
