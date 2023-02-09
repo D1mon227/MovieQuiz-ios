@@ -14,8 +14,6 @@ final class MovieQuizViewControllerProtocolMock: MovieQuizViewControllerProtocol
         
     }
     
-    var activityIndicator: UIActivityIndicatorView!
-    
     func show(quiz step: MovieQuiz.QuizStepViewModel) {
         
     }
