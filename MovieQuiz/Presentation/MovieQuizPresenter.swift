@@ -92,7 +92,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             switchToNextQuestion()
             questionFactory?.requestNextQuestion()
             viewController?.switchButton()
-            }
+        }
     }
     
     private func proceedWithAnswer(isCorrect: Bool) {
